@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lampochka - ipni tortib yoqish/o'chirish</title>
+<style>
+:root{
+--bg:#0b1020;
+--rope:#6b5e4a;
+--bulb-off:#ffffff;
+--bulb-on:#fff6b3;
+}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, Arial;background:linear-gradient(180deg,var(--bg),#111428);color:#eee}
+.stage{min-height:100vh;display:flex;align-items:center;justify-content:center}
+
+
+.lamp-wrap{position:relative;width:320px;height:420px}
+
+
+/* ip (rope) */
+.rope{position:absolute;left:50%;transform:translateX(-50%);top:8px;width:4px;height:160px;background:linear-gradient(#7b6a50,#5a4a36);border-radius:3px;transform-origin:top}
+
+
+/* ipni ushlaydigan tutqich (handle) */
+.handle{position:absolute;left:50%;transform:translateX(-50%);top:160px;width:28px;height:28px;border-radius:50%;background:var(--rope);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:none;box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.handle:active{transform:translateX(-50%) scale(.98)}
+.handle-inner{width:12px;height:12px;border-radius:50%;background:#d9c5a0}
+
+
+/* lampochka (bulb) */
+.bulb{position:absolute;left:50%;transform:translateX(-50%);top:200px;width:180px;height:200px;display:flex;align-items:flex-start;justify-content:center}
+
+
+/* glass */
+.bulb .glass{width:120px;height:120px;border-radius:60px 60px 48px 48px / 60px 60px 30px 30px;background:var(--bulb-off);box-shadow:inset -20px -10px 40px rgba(0,0,0,.22);transition:background .25s ease, filter .25s ease}
+
+
+/* glow when on */
+.bulb.on .glass{background:var(--bulb-on);filter:drop-shadow(0 8px 18px rgba(255,210,80,.25)) drop-shadow(0 30px 60px rgba(255,190,50,.07));}
+
+
+/* filament/inner */
+.filament{width:60px;height:10px;margin-top:68px;display:flex;align-items:center;justify-content:center}
+.filament .line{width:44px;height:4px;border-radius:2px;background:#a76b00;opacity:.9;transition:opacity .12s ease}
+.bulb.on .filament .line{opacity:1;background:#ffb84d;box-shadow:0 0 10px rgba(255,180,80,.9)}
+
+
+/* socket */
+.socket{width:80px;height:34px;background:linear-gradient(180deg,#666,#333);border-radius:6px;margin-top:6px}
+
+
+/* extra visual: light beams */
+.rays{position:absolute;left:50%;transform:translateX(-50%);top:160px;width:440px;height:200px;pointer-events:none;opacity:0;transition:opacity .25s ease}
+.bulb.on + .rays{opacity:1}
+.ray{position:absolute;left:50%;transform-origin:top center;top:0;width:2px;height:120px;background:radial-gradient(circle at center, rgba(255,230,150,.8), rgba(255,200,80,0));filter:blur(10px)}
+
+
+/* helper text */
+.hint{position:absolute;left:50%;transform:translateX(-50%);bottom:10px;color:#bfc8d6;font-size:13px}
+
+
+/* smooth return animation for handle */
+.handle.restore{transition:transform .32s cubic-bezier(.22,.9,.27,1)}
+
+
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="lamp-wrap" id="lampWrap">
+<div class="rope" id="rope"></div>
+<div class="handle" id="handle" role="button" aria-label="Lamp switch">
+<div class="handle-inner"></div>
+</div>
+
+
+<div class="bulb" id="bulb" aria-live="polite">
+<div>
+<div class="glass"></div>
+<div class="filament"><div class="line"></div></div>
+<div class="socket"></div>
+</div>
+</div>
+
+
+<div class="rays" id="rays">
+<!-- multiple subtle radial rays -->
+<div class="ray" style="transform:translateX(-220px) rotate(-25deg);opacity:.18;height:160px"></div>
+<div class="ray" style="transform:translateX(-140px) rotate(-10deg);opacity:.22;height:160px"></div>
